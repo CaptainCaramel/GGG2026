@@ -7,12 +7,8 @@ public class SnowmanScript : EnemyScript
     public GameObject projectile;
     public float projectileSpeed = 5;
     public float cooldown = 1.3f;
-    protected override void Attack()
-    {
-        StartCoroutine(AttackCrt());
-    }
 
-    IEnumerator AttackCrt()
+    protected override IEnumerator AttackCrt()
     {
         rb.linearVelocity = Vector2.zero;
         GameObject shotProjectile = Instantiate(projectile, projectileSpawnLocation.position, transform.rotation);
@@ -23,6 +19,14 @@ public class SnowmanScript : EnemyScript
         canAttack = true;
     }
 }
+
+
+
+
+
+
+
+
 
 
 

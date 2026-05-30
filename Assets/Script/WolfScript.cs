@@ -7,12 +7,8 @@ public class WolfScript : EnemyScript
     public GameObject bite;
     public float cooldown = 1f;
     public float attackDur = 0.3f;
-    protected override void Attack()
-    {
-        StartCoroutine(AttackCrt());
-    }
 
-    IEnumerator AttackCrt()
+    protected override IEnumerator AttackCrt()
     {
         rb.linearVelocity = Vector2.zero;
         bite.SetActive(true);
@@ -23,6 +19,12 @@ public class WolfScript : EnemyScript
         canAttack = true;
     }
 }
+
+
+
+
+
+
 
 
 

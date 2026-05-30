@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyScript : MonoBehaviour
@@ -62,7 +64,14 @@ public class EnemyScript : MonoBehaviour
     */
 
     protected virtual void Attack()
-    { }
+    {
+        StartCoroutine(AttackCrt());
+    }
+
+    protected virtual IEnumerator AttackCrt()
+    {
+        yield return null;
+    }
 
     protected virtual void death()
     {
