@@ -12,38 +12,27 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement")]
 
     [SerializeField] private float baseSpeed = 10f;
-
-    [SerializeField] private float dashForce = 7f;
-    [SerializeField] private float dashTime = 1.35f;
-    [SerializeField] private float dashCooldown = 1.35f;
-
-    private bool isDashing = false;
-    private bool dashAvailable = true;
-
-    private bool movementLocked = false;
-
-    private Rigidbody2D rb;
+    protected bool movementLocked = false;
+    protected Rigidbody2D rb;
 
 
     [Header("Combat")]
     [SerializeField] private float attackCooldown;
-    private bool isAttacking, attackAvailable;
+    protected bool isAttacking, attackAvailable;
+    protected bool aimLocked = false;
+
+    protected bool isQing, isEing, isUlting;
+    protected bool q_onCooldown, e_onCooldown, ult_onCooldown;
 
     [SerializeField] private GameObject puckPrefab;
     [SerializeField] private Transform puckTransform;
+    [SerializeField] protected Animator spinAnimator;
 
-
-    [Header("Interaction")]
-    [SerializeField] private float interactRadius = 2f;
-    [SerializeField] private LayerMask interactLayer;
-    private ContactFilter2D interactFilter;
-
-    public bool isReading = false;
 
     [Header("Controls")]
 
     [SerializeField] private InputSystem_Actions pl_controls;
-    [HideInInspector] public InputAction move, jump, attack, heavyAttack ,dash, downslam, block, interact;
+    [HideInInspector] public InputAction move, jump, attack, ability1, ability2, ulti;
 
     public Coroutine currentAction;
 
@@ -67,8 +56,7 @@ public class PlayerMovement : MonoBehaviour
     private bool godMode = false;
 
     [Header("Sprite")]
-    [SerializeField]
-    private GameObject puckHover;
+    [SerializeField] protected GameObject puckHover;
 
     public static PlayerMovement instance;
 
@@ -78,25 +66,20 @@ public class PlayerMovement : MonoBehaviour
         shakeCamScript = GetComponent<CamShakerScript>();
         instance = this;
         //sFlash = GetComponent<spriteFlashScript>();
-
-        interactFilter = new ContactFilter2D();
-        interactFilter.SetLayerMask(interactLayer);
-        interactFilter.useTriggers = true;
-
-        isDashing = false;
         attackAvailable = true;
         isAttacking = false;
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         move = pl_controls.Player.Move;
-        jump = pl_controls.Player.Jump;
         attack = pl_controls.Player.Attack;
-        //dash = pl_controls.Player.Dash;
-        interact = pl_controls.Player.Interact;
+        ability1 = pl_controls.Player.Ability1;
+        ability2 = pl_controls.Player.Ability2;
+        ulti = pl_controls.Player.Ulti;
+        
 
-        InputAction[] inputActions = { move, jump, attack, dash, interact};
+        InputAction[] inputActions = { move, jump, attack, ability1, ability2, ulti};
 
         foreach (InputAction action in inputActions)
         {
@@ -105,18 +88,15 @@ public class PlayerMovement : MonoBehaviour
 
 
         attack.performed += Attack_RegAction;
-        heavyAttack.started += Attack_HeavyStart;
-        heavyAttack.canceled += Attack_HeavyCancel;
-        heavyAttack.performed += Attack_HeavyAction;
-        dash.performed += DashAction;
-        downslam.performed += DownSlamAction;
-        //interact.performed += InteractAction;
+        ability1.performed += Attack_QAction;
+        ability2.performed += Attack_EAction;
+        ulti.performed += Attack_UltAction;
     }
 
 
     private void OnDisable()
     {
-        InputAction[] inputActions = { move, jump, attack, heavyAttack ,dash, downslam, block, interact};
+        InputAction[] inputActions = { move, jump, attack, ability1, ability2, ulti };
 
         foreach (InputAction action in inputActions)
         {
@@ -131,10 +111,14 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    void Update()
+    protected virtual void Update()
+    { 
+        if(!aimLocked)handleAim();
+    }
+
+    private void FixedUpdate()
     {
         if (!movementLocked) handleMovement();
-        handleAim();
     }
 
     void handleAim()
@@ -160,17 +144,17 @@ public class PlayerMovement : MonoBehaviour
 
     private bool CanAttack()
     {
-        return !isDashing && attackAvailable && !isAttacking;
+        return attackAvailable && !isAttacking;
     }
 
 
-    private void lockMovement(bool resetSpeed)
+    protected void lockMovement(bool resetSpeed)
     {
         movementLocked = true;
         if(resetSpeed)rb.linearVelocity = Vector3.zero;
     }
 
-    private void unlockMovement()
+    protected void unlockMovement()
     {
         movementLocked = false; 
     }
@@ -182,7 +166,6 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator attack_Regular()
     {
-        print("a");
         if(!CanAttack()) yield break;
 
 
@@ -203,7 +186,6 @@ public class PlayerMovement : MonoBehaviour
     public IEnumerator puckReturn()
     {
         puckHover.SetActive(true);
-        //puckHover.GetComponent<Animator>().StartPlayback();
 
         isAttacking = false;
         attackAvailable = true;
@@ -262,52 +244,50 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
+
+    private bool CanQ()
+    {
+        return !q_onCooldown && isQing && CanAttack(); 
+    }
+
+    private bool CanE()
+    {
+        return true;
+    }
+
+    private bool CanR()
+    {
+        return true;
+    }
+
+
     //      //     //   //    CONTROL METHODS     //      //    //     //
-
-    private void DashAction(InputAction.CallbackContext callbackContext)
-    {
-        //startAction(Dash());
-    }
-
-    private void ExitInteraction(InputAction.CallbackContext callbackContext)
-    {
-
-    }
 
     private void Attack_RegAction(InputAction.CallbackContext callbackContext)
     {
         startAction(attack_Regular());
     }
 
-    private void Attack_HeavyStart(InputAction.CallbackContext callbackContext)
+    private void test(InputAction.CallbackContext callbackContext)
     {
-        //if(!CanAttack()) return;
-
-       // heavyTEMP.SetActive(true);
-       // lockMovement(true);
+        print("asd");
     }
 
-    private void Attack_HeavyAction(InputAction.CallbackContext callbackContext)
+    protected virtual void Attack_QAction(InputAction.CallbackContext callbackContext) 
     {
-        //heavyTEMP.SetActive(false);
-        //unlockMovement();
-
-        //startAction(attack_heavy());
+        if(!CanQ()) return;
+        print("baseQ");
     }
 
-    private void Attack_HeavyCancel(InputAction.CallbackContext callbackContext)
+    protected virtual void Attack_EAction(InputAction.CallbackContext callbackContext)
     {
-        //heavyTEMP.SetActive(false);
-        //unlockMovement();
+        if (!CanE()) return;
     }
 
-    private void DownSlamAction(InputAction.CallbackContext callbackContext)
+    protected virtual void Attack_UltAction(InputAction.CallbackContext callbackContext)
     {
-        //startAction(startDownSlam());
+        if (!CanR()) return;
     }
- 
-
-
 
     //      //     //   //    COLLISION METHODS     //      //    //     //
 

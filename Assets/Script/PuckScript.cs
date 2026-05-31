@@ -10,6 +10,11 @@ public class PuckScript : MonoBehaviour
     [SerializeField] private float returnSpeed = 14.5f;
     [SerializeField] private float returnSpeedIncrement = 3.5f;
 
+    public int damage = 1;
+
+    [SerializeField] private bool sendOnAwake = true;
+    [SerializeField] private bool spinMode = false;
+
     private float currReturnSpeed;
 
     public GameObject returnObj;
@@ -29,14 +34,16 @@ public class PuckScript : MonoBehaviour
         returnMode = false;
         rb = GetComponent<Rigidbody2D>();
         camShakerScript = GetComponent<CamShakerScript>();
-        rb.AddForce(speed * transform.right);
+
+
+        if(sendOnAwake || !spinMode) rb.AddForce(speed * transform.right);
 
         currReturnSpeed = returnSpeed;
     }
 
     private void Update()
     {
-        if (returnMode)
+        if (returnMode && !spinMode)
         {
             Vector3 dir = (returnObj.transform.position - transform.position).normalized;
 
@@ -46,26 +53,74 @@ public class PuckScript : MonoBehaviour
         }
     }
 
+    public GameObject FindClosestObject(GameObject[] targets)
+    {
+        GameObject closest = null;
+        float minSqrDistance = Mathf.Infinity;
+        Vector3 currentPosition = transform.position;
+
+        foreach (GameObject target in targets)
+        {
+            if (target == null) continue;
+
+            Vector3 directionToTarget = target.transform.position - currentPosition;
+
+            float sqrDistance = directionToTarget.sqrMagnitude;
+
+            if (sqrDistance < minSqrDistance)
+            {
+                minSqrDistance = sqrDistance;
+                closest = target;
+            }
+        }
+
+        return closest;
+    }
+
+
+
+    private void returnPuck(PlayerMovement pm)
+    {
+        pm.StartCoroutine(pm.puckReturn());
+        Destroy(gameObject);
+    }
+
     private void FixedUpdate()
     {
-        if (returnMode)
+        if (returnMode && !spinMode)
         {
             rb.linearVelocity = transform.right * currReturnSpeed;
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        if (returnMode && collision.transform.parent.TryGetComponent(out PlayerMovement pm))
-        {
-            pm.StartCoroutine(pm.puckReturn());
-            Destroy(gameObject);
-            return;
-        }
-        camShakerScript.StartShake(hitShake);
+        EnemyScript enemyScript = collision.transform.root.GetComponent<EnemyScript>();
+        PlayerMovement pm = collision.transform.root.GetComponent<PlayerMovement>();
 
-        currReturnSpeed += returnSpeedIncrement;
-        returnMode = true;
-        print("entered");
+        if (returnMode)
+        {
+            if (collision.transform.root.gameObject == returnObj && pm != null)
+            {
+                returnPuck(pm);
+                return;
+            }
+
+            else if (enemyScript != null)
+            {
+                returnObj = PlayerMovement.instance.gameObject;
+            }
+
+        }
+
+
+        if (!spinMode)
+        {
+            currReturnSpeed += returnSpeedIncrement;
+            returnMode = true;
+        }
+
+        if(enemyScript != null)enemyScript.damage(damage);
+        camShakerScript.StartShake(hitShake);
     }
 }

@@ -193,13 +193,13 @@ GameObject:
   m_Component:
   - component: {fileID: 6723371339496778957}
   - component: {fileID: 7257748361162323855}
-  - component: {fileID: 4906345021102035846}
+  - component: {fileID: 7524793756824013465}
   - component: {fileID: 7048131091350983387}
   - component: {fileID: 8975284159752795735}
   - component: {fileID: 8862987103758133278}
   - component: {fileID: 7021758357019814939}
   m_Layer: 6
-  m_Name: Puck
+  m_Name: BerserkerPuck
   m_TagString: puck
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -280,7 +280,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &4906345021102035846
+--- !u!114 &7524793756824013465
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -289,7 +289,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7745641984099150858}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 860e3ed525e3deb49b40f08cbac309cf, type: 3}
+  m_Script: {fileID: 11500000, guid: 41284c337b047084a8833ff67483bfec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
   speed: 575

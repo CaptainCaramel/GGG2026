@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - puck
+  - berserkerDash
   layers:
   - Default
   - TransparentFX

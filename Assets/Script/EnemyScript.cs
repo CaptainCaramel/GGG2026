@@ -17,6 +17,16 @@ public class EnemyScript : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
+    private void OnEnable()
+    {
+        EnemyManager.instance.Enemies.Add(gameObject);
+    }
+
+    private void OnDisable()
+    {
+        EnemyManager.instance.Enemies.Remove(gameObject);
+    }
+
     protected virtual void Update()
     {
         Movement();
@@ -52,7 +62,6 @@ public class EnemyScript : MonoBehaviour
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        print("triggered");
         if (collision.gameObject.tag.Equals("puck")) death();
     }
 
@@ -76,5 +85,10 @@ public class EnemyScript : MonoBehaviour
     protected virtual void death()
     {
         Destroy(gameObject);
+    }
+
+    public void damage(int damage)
+    {
+        //hp -= damage
     }
 }
