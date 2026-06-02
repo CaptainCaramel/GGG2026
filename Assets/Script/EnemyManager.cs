@@ -65,7 +65,7 @@ public class EnemyManager : MonoBehaviour
         while(true)
         {
             yield return new WaitForSeconds(waitTime);
-            if (EnemyManager.instance.Enemies.Count == 15) continue;
+            if (EnemyManager.instance.Enemies.Count >= 15) continue;
             for(int i = 0; i <= spawnAmount; i++)
             {
                 int toSpawn = Random.Range(0, EnemiesToSpawn.Count - 1);
