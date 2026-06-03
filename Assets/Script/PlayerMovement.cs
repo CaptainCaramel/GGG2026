@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Movement")]
 
-    [SerializeField] private float baseSpeed = 10f;
+    [SerializeField] private float baseSpeed = 10f, nonBaseSpeed, fallBackSpeed;
     protected bool movementLocked = false;
     protected Rigidbody2D rb;
 
@@ -39,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("HP")]
 
     [SerializeField] private int hp = 100;
+    float hpCurVel = 0f;
     [SerializeField] private float invTime = 1f;
     private bool invincible = false;
     //private spriteFlashScript sFlash;
@@ -63,8 +64,13 @@ public class PlayerMovement : MonoBehaviour
 
     public static PlayerMovement instance;
 
+    public UnityEngine.UI.Slider hpslider;
+
+    public Animator yinulisGamgisAnimator;
+
     private void Awake()
     {
+        hp = 100;
         gameObject.name = "Player";
         pl_controls = new InputSystem_Actions();
         shakeCamScript = GetComponent<CamShakerScript>();
@@ -81,6 +87,14 @@ public class PlayerMovement : MonoBehaviour
         q_onCooldown = false;
         e_onCooldown = false;
         ult_onCooldown = false;
+
+        gameObject.name = "Player";
+
+        hpslider = GameObject.Find("HP").GetComponent<UnityEngine.UI.Slider>();
+        nonBaseSpeed = baseSpeed / 2;
+        fallBackSpeed = baseSpeed;
+
+        yinulisGamgisAnimator = GameObject.Find("YinulisGamge").GetComponent<Animator>();
     }
 
     protected virtual void OnEnable()
@@ -135,6 +149,16 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!movementLocked) handleMovement();
         if (!aimLocked) handleAim();
+        handleHP();
+    }
+
+    void handleHP()
+    {
+        hp = Mathf.Clamp(hp, 0, 100);
+        float sliderTarget = hp * 0.79f;
+
+        float currHP = Mathf.SmoothDamp(hpslider.value, sliderTarget, ref hpCurVel, 0.2f);
+        hpslider.value = currHP;
     }
 
     void handleAim()
@@ -142,7 +166,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         Vector3 aimDirection = (mousePos - transform.position).normalized;
         float angle = (Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg);
-        rb.SetRotation(angle);
+        transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
     private void handleMovement()
@@ -295,6 +319,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        String tag = collision.gameObject.tag;
+        /*
         if (collision.gameObject.CompareTag("attackHitbox"))
         {
             if (!invincible && !godMode) handleAttacked();
@@ -304,10 +330,36 @@ public class PlayerMovement : MonoBehaviour
         {
             startAction(damage(1));
         }
+        */
+        print("collision with " + tag);
+        print("collision with name: " + collision.gameObject.name);
+        if (tag.Contains("Hit")) 
+        {
+            int damageDeal = 0;
+            if (tag.Equals("oneHit")) damageDeal = 4;
+            else if (tag.Equals("twoHit")) damageDeal = 12;
+            else if (tag.Equals("threeHit")) damageDeal = 15;
+            else if (tag.Equals("fourHit")) damageDeal = 18;
+            StartCoroutine(damage(damageDeal));
+            if(collision.gameObject.name != "bite" && collision.gameObject.name != "Punch") Destroy(collision.gameObject);
+        }
+    }
 
-        if(collision.gameObject.tag == "oneHit") damage(5);
-        else if(collision.gameObject.tag == "twoHit") damage(10);
-        else if(collision.gameObject.tag == "threeHit") damage(15);
-        else if(collision.gameObject.tag == "fourHit") damage(20);
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if(collision.gameObject.tag == "Slower")
+        {
+            yinulisGamgisAnimator.Play("IceFadeIn");
+            baseSpeed = nonBaseSpeed; 
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Slower")
+        {
+            yinulisGamgisAnimator.Play("IceFadeOut");
+            baseSpeed = fallBackSpeed;
+        }
     }
 }

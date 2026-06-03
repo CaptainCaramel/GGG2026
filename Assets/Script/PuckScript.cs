@@ -36,6 +36,8 @@ public class PuckScript : MonoBehaviour
 
     protected virtual void Awake()
     {
+        gameObject.name = "puck";
+
         returnMode = false;
         collectable = false;
         rb = GetComponent<Rigidbody2D>();
