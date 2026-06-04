@@ -6,6 +6,7 @@ public class CamShakerScript : MonoBehaviour
 {
     public float amplitude, frequency, time;
 
+    public bool singleton = false;
 
     private CinemachineCamera cam;
     private CinemachineBasicMultiChannelPerlin cbmcp;
@@ -16,7 +17,7 @@ public class CamShakerScript : MonoBehaviour
     private void Awake()
     {
         
-        instance = this;
+        if(singleton)instance = this;
     }
 
 

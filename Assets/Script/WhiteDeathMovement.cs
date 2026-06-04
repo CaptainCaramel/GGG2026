@@ -12,14 +12,14 @@ public class WhiteDeathMovement : PlayerMovement
     private bool isChargingQ = false;
     private bool isQMaxxed = false;
     [SerializeField] private float qCooldown = 5;
-    [SerializeField] private float fullQCooldown = 8;
+    [SerializeField] private float fullQCooldown = 5;
     [SerializeField] GameObject halfChargedPuck, fullChargedPuck;
 
     [SerializeField] GameObject bomb;
     [SerializeField] private float eCooldown = 7;
 
     [SerializeField] private int ultShotAmount = 5;
-    [SerializeField] private float UltCooldown = 200f;
+    [SerializeField] private float UltCooldown = 20f;
     [SerializeField] private float UltShootDelta = 4f;
 
     [SerializeField] private GameObject ultShot;
@@ -31,6 +31,12 @@ public class WhiteDeathMovement : PlayerMovement
 
     [SerializeField] private float knockbacktime = 0.25f;
     [SerializeField] private float knockbackForce = 200f;
+
+    protected override void Awake()
+    {
+        playerClass = PlayerClass.theWhiteDeath;
+        base.Awake();
+    }
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -76,6 +82,8 @@ public class WhiteDeathMovement : PlayerMovement
         t.StartCoroutine(t.returnCRT());
         puckHover.SetActive(false);
 
+        AbilitySliderController.instance.resetSlider(0);
+
         lockMovement(true);
         rb.AddForce(-transform.right * knockbackForce * 2.5f);
         rb.linearDamping = 1.75f;
@@ -86,8 +94,10 @@ public class WhiteDeathMovement : PlayerMovement
         currentAction = null;
 
 
+        
+
         q_onCooldown = true;
-        yield return new WaitForSeconds(fullQCooldown);
+        yield return new WaitForSeconds(fullQCooldown - (knockbacktime+0.25f));
         q_onCooldown = false;   
     }
 
@@ -102,6 +112,8 @@ public class WhiteDeathMovement : PlayerMovement
         t.StartCoroutine(t.returnCRT());
         puckHover.SetActive(false);
 
+        AbilitySliderController.instance.resetSlider(0);
+
         lockMovement(true);
         rb.AddForce(-transform.right * knockbackForce);
         rb.linearDamping = 1.75f;
@@ -111,9 +123,10 @@ public class WhiteDeathMovement : PlayerMovement
 
         currentAction = null;
 
+        
 
         q_onCooldown = true;
-        yield return new WaitForSeconds(qCooldown);
+        yield return new WaitForSeconds(qCooldown-knockbacktime);
         q_onCooldown = false;
     }
 
@@ -124,6 +137,8 @@ public class WhiteDeathMovement : PlayerMovement
         else t = PuckScript.instance.transform;
 
         Instantiate(bomb, t.position, t.rotation);
+
+        AbilitySliderController.instance.resetSlider(1);
 
         e_onCooldown = true;
         yield return new WaitForSeconds(eCooldown);
@@ -152,13 +167,18 @@ public class WhiteDeathMovement : PlayerMovement
 
         isUlting = false;
 
+        AbilitySliderController.instance.resetSlider(2);
+
         ult_onCooldown = true;
         yield return new WaitForSeconds(UltCooldown);
         ult_onCooldown = false;
 
     }
 
-
+    protected override bool CanAttack()
+    {
+        return base.CanAttack() && !isChargingQ;
+    }
 
 
     protected override bool CanQ()

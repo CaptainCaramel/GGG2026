@@ -364,12 +364,30 @@
         },
         {
             "name": "McConnor",
-            "id": "0d57d8cf-86f5-4938-a425-4790bd8e383a",
+            "id": "baa69efa-651f-4808-b409-9ceb65a08621",
             "actions": [
                 {
-                    "name": "New action",
+                    "name": "Ability1",
                     "type": "Button",
-                    "id": "986769a4-c54c-47a7-ab96-2b1f55a41da3",
+                    "id": "bc307814-aa0e-470d-94e7-ccc71a02c28b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Ability2",
+                    "type": "Button",
+                    "id": "4ab3560e-aaeb-4fe5-bfba-a9f7b959029c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Ulti",
+                    "type": "Button",
+                    "id": "ecb46c5e-821e-4377-b50c-88808c206836",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -379,12 +397,34 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "8cab5721-9dc3-44ad-a1b9-c1ff3f082397",
-                    "path": "",
+                    "id": "b77db141-c833-4351-bf11-1b6855a4c07e",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "New action",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Ability1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "30ace7a1-077d-4551-8ba0-581705ec2554",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Ability2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b5cce827-f761-412c-9707-e256e57c1fd1",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Ulti",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

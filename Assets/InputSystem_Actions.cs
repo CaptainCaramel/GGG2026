@@ -450,12 +450,30 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         },
         {
             ""name"": ""McConnor"",
-            ""id"": ""0d57d8cf-86f5-4938-a425-4790bd8e383a"",
+            ""id"": ""baa69efa-651f-4808-b409-9ceb65a08621"",
             ""actions"": [
                 {
-                    ""name"": ""New action"",
+                    ""name"": ""Ability1"",
                     ""type"": ""Button"",
-                    ""id"": ""986769a4-c54c-47a7-ab96-2b1f55a41da3"",
+                    ""id"": ""bc307814-aa0e-470d-94e7-ccc71a02c28b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ability2"",
+                    ""type"": ""Button"",
+                    ""id"": ""4ab3560e-aaeb-4fe5-bfba-a9f7b959029c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ulti"",
+                    ""type"": ""Button"",
+                    ""id"": ""ecb46c5e-821e-4377-b50c-88808c206836"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -465,12 +483,34 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""8cab5721-9dc3-44ad-a1b9-c1ff3f082397"",
-                    ""path"": """",
+                    ""id"": ""b77db141-c833-4351-bf11-1b6855a4c07e"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action"",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Ability1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""30ace7a1-077d-4551-8ba0-581705ec2554"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Ability2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b5cce827-f761-412c-9707-e256e57c1fd1"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Ulti"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -556,7 +596,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_WhiteDeath_Ulti = m_WhiteDeath.FindAction("Ulti", throwIfNotFound: true);
         // McConnor
         m_McConnor = asset.FindActionMap("McConnor", throwIfNotFound: true);
-        m_McConnor_Newaction = m_McConnor.FindAction("New action", throwIfNotFound: true);
+        m_McConnor_Ability1 = m_McConnor.FindAction("Ability1", throwIfNotFound: true);
+        m_McConnor_Ability2 = m_McConnor.FindAction("Ability2", throwIfNotFound: true);
+        m_McConnor_Ulti = m_McConnor.FindAction("Ulti", throwIfNotFound: true);
     }
 
     ~@InputSystem_Actions()
@@ -983,7 +1025,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     // McConnor
     private readonly InputActionMap m_McConnor;
     private List<IMcConnorActions> m_McConnorActionsCallbackInterfaces = new List<IMcConnorActions>();
-    private readonly InputAction m_McConnor_Newaction;
+    private readonly InputAction m_McConnor_Ability1;
+    private readonly InputAction m_McConnor_Ability2;
+    private readonly InputAction m_McConnor_Ulti;
     /// <summary>
     /// Provides access to input actions defined in input action map "McConnor".
     /// </summary>
@@ -996,9 +1040,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// </summary>
         public McConnorActions(@InputSystem_Actions wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input action "McConnor/Newaction".
+        /// Provides access to the underlying input action "McConnor/Ability1".
         /// </summary>
-        public InputAction @Newaction => m_Wrapper.m_McConnor_Newaction;
+        public InputAction @Ability1 => m_Wrapper.m_McConnor_Ability1;
+        /// <summary>
+        /// Provides access to the underlying input action "McConnor/Ability2".
+        /// </summary>
+        public InputAction @Ability2 => m_Wrapper.m_McConnor_Ability2;
+        /// <summary>
+        /// Provides access to the underlying input action "McConnor/Ulti".
+        /// </summary>
+        public InputAction @Ulti => m_Wrapper.m_McConnor_Ulti;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1025,9 +1077,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_McConnorActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_McConnorActionsCallbackInterfaces.Add(instance);
-            @Newaction.started += instance.OnNewaction;
-            @Newaction.performed += instance.OnNewaction;
-            @Newaction.canceled += instance.OnNewaction;
+            @Ability1.started += instance.OnAbility1;
+            @Ability1.performed += instance.OnAbility1;
+            @Ability1.canceled += instance.OnAbility1;
+            @Ability2.started += instance.OnAbility2;
+            @Ability2.performed += instance.OnAbility2;
+            @Ability2.canceled += instance.OnAbility2;
+            @Ulti.started += instance.OnUlti;
+            @Ulti.performed += instance.OnUlti;
+            @Ulti.canceled += instance.OnUlti;
         }
 
         /// <summary>
@@ -1039,9 +1097,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="McConnorActions" />
         private void UnregisterCallbacks(IMcConnorActions instance)
         {
-            @Newaction.started -= instance.OnNewaction;
-            @Newaction.performed -= instance.OnNewaction;
-            @Newaction.canceled -= instance.OnNewaction;
+            @Ability1.started -= instance.OnAbility1;
+            @Ability1.performed -= instance.OnAbility1;
+            @Ability1.canceled -= instance.OnAbility1;
+            @Ability2.started -= instance.OnAbility2;
+            @Ability2.performed -= instance.OnAbility2;
+            @Ability2.canceled -= instance.OnAbility2;
+            @Ulti.started -= instance.OnUlti;
+            @Ulti.performed -= instance.OnUlti;
+            @Ulti.canceled -= instance.OnUlti;
         }
 
         /// <summary>
@@ -1228,11 +1292,25 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     public interface IMcConnorActions
     {
         /// <summary>
-        /// Method invoked when associated input action "New action" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Ability1" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnNewaction(InputAction.CallbackContext context);
+        void OnAbility1(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Ability2" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnAbility2(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Ulti" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnUlti(InputAction.CallbackContext context);
     }
 }

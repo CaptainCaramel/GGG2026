@@ -21,7 +21,6 @@ public class VignetteControllerScript : MonoBehaviour
     {
         instance = this;
         sceneVolume.profile.TryGet(out vignette);
-        print(vignette);
         defaultVignetteSize = (float)vignette.intensity;
         
         vignette.color.overrideState = true;

@@ -125,6 +125,7 @@ public class PuckScript : MonoBehaviour
         if (enemyScript != null)
         {
             enemyScript.damage(damage);
+            currReturnSpeed += returnSpeedIncrement;
             backtothefuture();
         }
         camShakerScript.StartShake(hitShake);
@@ -135,6 +136,7 @@ public class PuckScript : MonoBehaviour
         PlayerMovement pm = collision.transform.root.GetComponent<PlayerMovement>();
         if (pm != null && !pm.isEing && (returnObj == player || collectable))
         {
+            print("PUCKreturning");
             returnPuck(pm);
             return;
         }
@@ -150,7 +152,6 @@ public class PuckScript : MonoBehaviour
 
     void backtothefuture()
     {
-        currReturnSpeed += returnSpeedIncrement;
         returnObj = PlayerMovement.instance.gameObject;
         returnMode = true;
     }

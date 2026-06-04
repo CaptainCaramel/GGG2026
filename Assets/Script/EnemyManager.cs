@@ -93,7 +93,7 @@ public class EnemyManager : MonoBehaviour
             return;
         }
         killCount++;
-        killCount = 170;
+        //killCount = 170;
         rotation += 0.8f;
         intensity -= 0.0009f;
         strength += 0.0028f;
@@ -102,7 +102,6 @@ public class EnemyManager : MonoBehaviour
         if (globalLights[0].intensity <= 0.1f) return;
         for(int i = 0; i < globalLights.Length; i++)
         {
-            print("KILL COUNT: " + killCount);
             globalLights[i].intensity = intensity;
             fallOfFields.SetValue(globalLights[i], strength);
         }

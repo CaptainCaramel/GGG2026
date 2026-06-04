@@ -12,6 +12,7 @@ TagManager:
   - Slower
   - threeHit
   - campfire
+  - frostbiteDash
   layers:
   - Default
   - TransparentFX
@@ -24,7 +25,7 @@ TagManager:
   - cameraBorders
   - Slower
   - Wall
-  - 
+  - No Post
   - 
   - 
   - 

@@ -36,6 +36,11 @@ public class BerserkerMovement : PlayerMovement
 
     [SerializeField] private GameObject spinPuck;
 
+    protected override void Awake()
+    {
+        playerClass = PlayerClass.berserker;
+        base.Awake();
+    }
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -77,6 +82,8 @@ public class BerserkerMovement : PlayerMovement
 
         dashHitBox.SetActive(true);
 
+        spriteAnimator.Play("red_slide");
+
         rb.AddForce(transform.right *  dashForce * dashCharge * 250);
         dashCharge = 0;
         dashSlider.value = 0;
@@ -88,7 +95,11 @@ public class BerserkerMovement : PlayerMovement
         isDashing = false;
         isEing = false;
 
+        AbilitySliderController.instance.resetSlider(1);
+
+        e_onCooldown = true;
         yield return new WaitForSeconds(dashCooldown);
+        e_onCooldown = false;
     }
 
     private IEnumerator qAttack()
@@ -110,6 +121,8 @@ public class BerserkerMovement : PlayerMovement
         aimLocked = false;
         isAttacking = false;
         isQing = false;
+
+        AbilitySliderController.instance.resetSlider(0);
 
         q_onCooldown = true;
         yield return new WaitForSeconds(spinCooldown);
@@ -144,6 +157,8 @@ public class BerserkerMovement : PlayerMovement
         CameraFlashScript.instance.callFlash();
         VignetteControllerScript.instance.resetIntensity();
         VignetteControllerScript.instance.changeColor(Color.black);
+
+        AbilitySliderController.instance.resetSlider(2);
 
         ult_onCooldown = true;
         yield return new WaitForSeconds(ultCooldown);

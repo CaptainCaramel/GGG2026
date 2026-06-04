@@ -37,8 +37,11 @@ public class BombScript : MonoBehaviour
     private IEnumerator explodeCRT()
     {
         yield return new WaitForSeconds(detonateTime);
-        print("b");
+        explode();
+    }
 
+    private void explode()
+    {
         driftParticles.transform.parent = null;
         driftParticles.Stop();
 

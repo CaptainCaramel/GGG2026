@@ -2,7 +2,7 @@ using System;
 using UnityEngine.InputSystem;
 using UnityEngine;
 using System.Collections;
-
+using UnityEngine.UI;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
@@ -24,6 +24,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] protected Transform puckTransform;
     [SerializeField] protected Animator spinAnimator;
 
+    private Slider[] abilitySliders;
+
 
     [Header("Controls")]
 
@@ -37,13 +39,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private int hp = 100;
     float hpCurVel = 0f;
     [SerializeField] private float invTime = 1f;
-    private bool invincible = false;
+    protected bool invincible = false;
     //private spriteFlashScript sFlash;
 
 
     [Header("VFX")]
     [SerializeField]
     private CamShakerScript shakeCamScript;
+    [SerializeField] private spriteFlashScript sFlash;
+    [SerializeField] private Transform camTarget;   
 
     [SerializeField] protected ShakeSelfScript shakeSelfScript;
 
@@ -59,11 +63,25 @@ public class PlayerMovement : MonoBehaviour
 
     public static PlayerMovement instance;
 
-    public UnityEngine.UI.Slider hpslider;
+    public Slider hpslider;
 
     public Animator yinulisGamgisAnimator;
 
-    private void Awake()
+    [SerializeField] protected StickHandler stickHandler;
+    [SerializeField] protected Animator spriteAnimator;
+
+
+    [Header("Audio")]
+
+    [SerializeField] private AudioClip[] attackSounds;
+
+
+    public enum PlayerClass {berserker = 0, theWhiteDeath = 1, frostbite = 2}
+    public PlayerClass playerClass;
+
+    private audioManager audioMgr;
+
+    protected virtual void Awake()
     {
         hp = 100;
         gameObject.name = "Player";
@@ -131,19 +149,22 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-    }
+        audioMgr = audioManager.instance;
 
+        abilitySliders = AbilitySliderController.instance.currSliders;
+
+        CameraManager.instance.cm_Main.Follow = camTarget;
+    }
 
     protected virtual void Update()
     {
-
+        handleHP();
     }
 
-    private void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         if (!movementLocked) handleMovement();
         if (!aimLocked) handleAim();
-        handleHP();
     }
 
     void handleHP()
@@ -176,7 +197,7 @@ public class PlayerMovement : MonoBehaviour
     // return !isDashing && dashAvailable && !isAttacking;
     //}
 
-    private bool CanAttack()
+    protected virtual bool CanAttack()
     {
         return attackAvailable && !isAttacking;
     }
@@ -206,11 +227,15 @@ public class PlayerMovement : MonoBehaviour
         attackAvailable = false;
         isAttacking = true;
 
-        //if (onPlayerAttack != null) onPlayerAttack();
+        stickHandler.swingAnim();
+        yield return new WaitForSeconds(0.1f);
 
         //Attack Code
         GameObject puck = Instantiate(puckPrefab, puckTransform.position, puckTransform.rotation);
         //puck.GetComponent<PuckScript>().returnObj = gameObject;
+
+        audioMgr.playRandomAudio(attackSounds, 0.35f, 1, transform, audioMgr.sfx);
+
         puckHover.SetActive(false);
 
 
@@ -231,9 +256,9 @@ public class PlayerMovement : MonoBehaviour
     {
         invincible = true;
         hp -= damage;
-        //sFlash.callFlash();
-        //shakeCamScript.StartShake(damageShake);
-        StartCoroutine(frameStop(0.12f));
+        sFlash.callFlash();
+        shakeCamScript.StartShake(damageShake);
+        StartCoroutine(frameStop(0.2f));
 
         yield return new WaitForSeconds(invTime);
         invincible = false;
@@ -314,7 +339,6 @@ public class PlayerMovement : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         String tag = collision.gameObject.tag;
-        print(tag);
         /*
         if (collision.gameObject.CompareTag("attackHitbox"))
         {
@@ -326,9 +350,7 @@ public class PlayerMovement : MonoBehaviour
             startAction(damage(1));
         }
         */
-        print("collision with " + tag);
-        print("collision with name: " + collision.gameObject.name);
-        if (tag.Contains("Hit"))
+        if (tag.Contains("Hit") && !invincible)
         {
             int damageDeal = 0;
             if (tag.Equals("oneHit")) damageDeal = 4;
