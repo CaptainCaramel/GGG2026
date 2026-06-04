@@ -111,10 +111,10 @@ public class EnemyManager : MonoBehaviour
 
     private IEnumerator spawning()
     {
-        yield return new WaitForSeconds(2f);
-        killCount = 170;
-        incrimentDeath();
-        while(false && !EnemyManager.instance.bossFightStarted)
+        //yield return new WaitForSeconds(2f);
+        //killCount = 170;
+        //incrimentDeath();
+        while(true && !EnemyManager.instance.bossFightStarted)
         {
             yield return new WaitForSeconds(waitTime);
             if (EnemyManager.instance.Enemies.Count >= 15) continue;
