@@ -113,6 +113,8 @@ MonoBehaviour:
   RangeMaximum: 160
   shouldRandomize: 1
   Krampus: {fileID: 0}
+  spriteFlash: {fileID: 0}
+  hp: 1
   velocity: 7
 --- !u!50 &8452155999840870942
 Rigidbody2D:

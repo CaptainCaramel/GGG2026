@@ -151,6 +151,7 @@ GameObject:
   - component: {fileID: 1763015693947550266}
   - component: {fileID: 7949733301559908948}
   - component: {fileID: 6426008185280944656}
+  - component: {fileID: 6578165094544642319}
   m_Layer: 7
   m_Name: WhiteWolf
   m_TagString: Untagged
@@ -219,6 +220,9 @@ MonoBehaviour:
   RangeMinus: 101
   RangeMaximum: 120
   shouldRandomize: 1
+  Krampus: {fileID: 0}
+  spriteFlash: {fileID: 0}
+  hp: 2
   attHitbox: {fileID: 1209989477970347955}
   cooldown: 0.6
   attackDur: 0.45
@@ -296,6 +300,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6578165094544642319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4356489360783975179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbd8bf8a548841542ac67bac22dcde2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::spriteFlashScript
+  _duration: 0.5
 --- !u!1 &8590682838270760267
 GameObject:
   m_ObjectHideFlags: 0

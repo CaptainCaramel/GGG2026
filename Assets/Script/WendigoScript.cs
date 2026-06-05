@@ -16,6 +16,13 @@ public class WendigoScript : EnemyScript
     public Vector3 wallShake = new Vector3(2f,2f,1f);
     public bool alrHit;
     public bool start;
+    public UnityEngine.UI.Slider hpslider;
+    new private int hp = 100;
+    float hpCurVel = 0f;
+    public Transform wendysFuneralLocation;
+    public GameObject ender;
+    public GameObject wall;
+    new public spriteFlashScript spriteFlash;
 
     protected override void Start()
     {
@@ -24,10 +31,15 @@ public class WendigoScript : EnemyScript
         rotationSpeed = 360;
         alrHit = false;
         StartCoroutine(starter());
+        snapAtTarget(wall.transform);
+        spriteFlash = GetComponent<spriteFlashScript>();
+        hp = 100;
     }
 
     public override void Movement()
     {
+        handleHP();
+
         if (!start) return;
 
         bool isInRange = distance <= attackDistance;
@@ -55,6 +67,14 @@ public class WendigoScript : EnemyScript
             rb.linearVelocity = direction * (speed);
             alrHit = true;
         }
+    }
+
+
+    void handleHP()
+    {
+        hp = Mathf.Clamp(hp, 0, 100);
+        float currHP = Mathf.SmoothDamp(hpslider.value, hp, ref hpCurVel, 0.2f);
+        hpslider.value = currHP;
     }
 
     IEnumerator charge(bool isFirst)
@@ -181,7 +201,28 @@ public class WendigoScript : EnemyScript
     public IEnumerator starter()
     {
         start = false;
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(3f);
         start = true;
+    }
+
+    protected override void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.tag == "puck")
+        {
+            damage(2);
+        }
+    }
+
+    public override void damage(int damage)
+    {
+        spriteFlash.callFlash();
+        hp--;
+        if(hp <= 0)
+        {
+            start = false;
+            Instantiate(deathParticles, wendysFuneralLocation.position, Quaternion.identity);
+            ender.SetActive(true);
+            Destroy(gameObject);
+        }
     }
 }

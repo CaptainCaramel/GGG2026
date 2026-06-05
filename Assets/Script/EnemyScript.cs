@@ -18,17 +18,21 @@ public class EnemyScript : MonoBehaviour
     public int RangeMinus, RangeMaximum;
     public bool shouldRandomize;
     public GameObject Krampus;
+    public spriteFlashScript spriteFlash;
+    public int hp;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        spriteFlash = GetComponent<spriteFlashScript>();
     }
 
     protected virtual void Start()
     {
         if(shouldRandomize) spriteRenderer.sortingOrder = UnityEngine.Random.Range(RangeMinus, RangeMaximum);
         player = PlayerMovement.instance.gameObject.transform;
-        //EnemyManager.instance.Enemies.Add(gameObject);
+        EnemyManager.instance.Enemies.Add(gameObject);
         snapAtTarget(player);
         StartCoroutine(wakeUp());
         SetupSubscriptionToCaptainCaramel();
@@ -167,10 +171,16 @@ public class EnemyScript : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void damage(int damage)
+    public virtual void damage(int damage)
     {
-       // Time.timeScale = 0;
-        death();
+        // Time.timeScale = 0;
+        hp--;
+        if (hp <= 0)
+        {
+            death();
+            return;
+        }
+        spriteFlash.callFlash();
     }
 
     public void halt()

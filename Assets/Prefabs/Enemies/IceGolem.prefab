@@ -5380,6 +5380,7 @@ GameObject:
   - component: {fileID: 2174782810657533785}
   - component: {fileID: 7780087576088617647}
   - component: {fileID: 4071397055875056304}
+  - component: {fileID: 704343863751775210}
   m_Layer: 7
   m_Name: IceGolem
   m_TagString: Untagged
@@ -5497,6 +5498,9 @@ MonoBehaviour:
   RangeMinus: 20
   RangeMaximum: 40
   shouldRandomize: 1
+  Krampus: {fileID: 0}
+  spriteFlash: {fileID: 0}
+  hp: 2
   attHitbox: {fileID: 7405372907868489356}
   cooldown: 0.4
   attackDur: 0.35
@@ -5528,3 +5532,16 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &704343863751775210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7504463046675017734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbd8bf8a548841542ac67bac22dcde2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::spriteFlashScript
+  _duration: 0.5

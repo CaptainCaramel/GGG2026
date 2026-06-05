@@ -38,7 +38,7 @@ public class EnemyManager : MonoBehaviour
     public event Action bossfightStartedEv;
 
     public GameObject levanisDabadebisdge;
-    public GameObject wendigo;
+    public GameObject wendigo, wendigoCanvas;
 
     private void Awake()
     {
@@ -148,6 +148,7 @@ public class EnemyManager : MonoBehaviour
         levanisDabadebisdge.SetActive(true);
         yield return new WaitForSeconds(2f);
         wendigo.SetActive(true);
+        wendigoCanvas.SetActive(true);
         yield return new WaitForSeconds(3.2f);
         levanisDabadebisdge.SetActive(false);
     }

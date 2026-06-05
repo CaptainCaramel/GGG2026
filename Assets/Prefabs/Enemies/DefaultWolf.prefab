@@ -172,6 +172,9 @@ MonoBehaviour:
   RangeMinus: 80
   RangeMaximum: 100
   shouldRandomize: 1
+  Krampus: {fileID: 0}
+  spriteFlash: {fileID: 0}
+  hp: 1
   attHitbox: {fileID: 6502455867398168881}
   cooldown: 1
   attackDur: 0.45

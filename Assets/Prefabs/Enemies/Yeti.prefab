@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5975129503403809744}
   - component: {fileID: 7238797449126280847}
   - component: {fileID: 5680025128302316055}
+  - component: {fileID: 8123933077381078408}
   m_Layer: 7
   m_Name: Yeti
   m_TagString: Untagged
@@ -81,6 +82,9 @@ MonoBehaviour:
   RangeMinus: 40
   RangeMaximum: 60
   shouldRandomize: 1
+  Krampus: {fileID: 0}
+  spriteFlash: {fileID: 0}
+  hp: 2
   projectileSpawnLocation: {fileID: 1615431035087512883}
   projectile: {fileID: 3302735451581132710, guid: 152f28758da1d4b448c43f7aacdeb021, type: 3}
   projectileSpeed: 14
@@ -144,6 +148,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8123933077381078408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4989658727230301646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbd8bf8a548841542ac67bac22dcde2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::spriteFlashScript
+  _duration: 0.5
 --- !u!1 &5886089568535416632
 GameObject:
   m_ObjectHideFlags: 0

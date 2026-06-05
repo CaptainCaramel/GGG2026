@@ -193,6 +193,8 @@ MonoBehaviour:
   RangeMaximum: 80
   shouldRandomize: 1
   Krampus: {fileID: 0}
+  spriteFlash: {fileID: 0}
+  hp: 1
   iceMemphit: {fileID: 4169839648333897261, guid: 64f06f29c1b6da145983a9b927fe9b86, type: 3}
   cooldown: 4
   chargeUp: 1
