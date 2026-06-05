@@ -188,7 +188,11 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector2 moveXY = move.ReadValue<Vector2>();
 
-        rb.linearVelocity = moveXY * baseSpeed;
+        if (moveXY != Vector2.zero)
+        {
+            rb.linearVelocity = moveXY * baseSpeed;
+        }
+        else rb.linearDamping = 5;
 
     }
 
@@ -206,6 +210,7 @@ public class PlayerMovement : MonoBehaviour
     protected void lockMovement(bool resetSpeed)
     {
         movementLocked = true;
+        rb.linearDamping = 0;
         if (resetSpeed) rb.linearVelocity = Vector3.zero;
     }
 
