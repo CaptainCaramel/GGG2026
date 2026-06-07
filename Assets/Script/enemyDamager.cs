@@ -20,6 +20,6 @@ public class enemyDamager : MonoBehaviour
         if (enemyScript != null) enemyScript.damage(damage);
 
         print(camShakerScript);
-        camShakerScript.StartShake(hitShake);
+        if(camShakerScript != null) camShakerScript.StartShake(hitShake);
     }
 }

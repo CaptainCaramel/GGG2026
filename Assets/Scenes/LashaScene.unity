@@ -34583,7 +34583,7 @@ MonoBehaviour:
   slashDouble: {fileID: 0}
   slashLong: {fileID: 0}
   wallHit: {fileID: 0}
-  sikdili: []
+  sikdili: {fileID: 0}
   hitbox: {fileID: 0}
   chargeHitbox: {fileID: 0}
 --- !u!4 &1904076877
@@ -47030,6 +47030,10 @@ PrefabInstance:
       propertyPath: chucker
       value: 
       objectReference: {fileID: 1968332543}
+    - target: {fileID: 6477673414206065060, guid: f85e41518828e7b449891baa7d7dc7bd, type: 3}
+      propertyPath: sikdili
+      value: 
+      objectReference: {fileID: 8300000, guid: 14871f4cbd990bb4eab662275c7d2015, type: 3}
     - target: {fileID: 6477673414206065060, guid: f85e41518828e7b449891baa7d7dc7bd, type: 3}
       propertyPath: hpslider
       value: 

@@ -5040,4 +5040,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::enemyDamager
   camShakerScript: {fileID: 0}
-  damage: 3
+  damage: 1

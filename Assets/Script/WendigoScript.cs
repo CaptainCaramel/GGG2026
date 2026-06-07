@@ -29,16 +29,16 @@ public class WendigoScript : EnemyScript
     bool first;
 
     [SerializeField] private AudioClip slashDouble, slashLong, wallHit;
-    [SerializeField] private AudioClip[] sikdili;
+    [SerializeField] private AudioClip sikdili;
 
     private AudioSource currAttackSource;
 
     [SerializeField] private GameObject hitbox, chargeHitbox;
 
+    bool dead;
+
     protected override void Start()
     {
-        deathSound = sikdili;
-
         base.Start();
         setSpeedAndRange(8, 0);
         rotationSpeed = 360;
@@ -49,13 +49,14 @@ public class WendigoScript : EnemyScript
         hp = 2000;
         first = true;
         spriteFlash = selfFlash;
+        dead = false;
     }
 
     public override void Movement()
     {
-        if (!start) return;
-
         handleHP();
+        if (!start || dead) return;
+
         print("aq var");
         bool isInRange = distance <= attackDistance;
         if (shouldRotate || isAttacking && isInRange && !isCharging) lookAt(angleToTarget);
@@ -100,7 +101,7 @@ public class WendigoScript : EnemyScript
 
     IEnumerator charge(bool isFirst)
     {
-        if (!canAttack && isFirst) yield break;
+        if (!canAttack && isFirst || dead) yield break;
         hitbox.SetActive(false);
 
         isAttacking = true;
@@ -150,7 +151,7 @@ public class WendigoScript : EnemyScript
 
     protected override void Attack()
     {
-        if (!canAttack) return;
+        if (!canAttack || dead) return;
 
         halt();
 
@@ -269,12 +270,14 @@ public class WendigoScript : EnemyScript
 
     IEnumerator audioTurnoffer()
     {
-        start = false;
+        dead = true;
+        StopAllCoroutines();
         rb.linearVelocity = Vector2.zero;
         rb.angularVelocity = 0;
         clawAnimator.SetBool("isCrashingOut", false);
         clawAnimator.SetBool("isAttacking", false);
-        animator.SetBool("isDeading", true);    
+        animator.SetBool("isDeading", true);
+        audioManager.instance.playAudio(sikdili, 0.5f, 1, transform, audioManager.instance.sfx);
         yield return new WaitForSeconds(3f);
         endingAnimator.SetBool("end", true);
         chucker.SetBool("chuck", true);
