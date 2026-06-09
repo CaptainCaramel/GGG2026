@@ -13,7 +13,7 @@ public class functionScript : MonoBehaviour
     public Text Choose;
     public GameObject fadeout;
     public static int klasi; // 0 bersk, 1 blue, 2 yel
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // Start is called once before the first execution of Update after the MonoBehaviour is created!~
     void Start()
     {
         klasi = 0;
